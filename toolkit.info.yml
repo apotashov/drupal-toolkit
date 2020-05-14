@@ -1,0 +1,7 @@
+name: 'Toolkit'
+description: 'Development toolkit containing useful components.'
+type: module
+core: 8.x
+dependencies:
+  - drupal:entity_reference
+  - jsonapi:jsonapi

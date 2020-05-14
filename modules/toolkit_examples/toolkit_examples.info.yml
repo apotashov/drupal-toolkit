@@ -1,0 +1,6 @@
+name: 'Toolkit examples'
+description: 'Examples that highlight toolkit functionality.'
+type: module
+core: 8.x
+dependencies:
+  - toolkit:toolkit

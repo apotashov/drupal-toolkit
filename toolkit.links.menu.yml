@@ -1,0 +1,5 @@
+toolkit.admin_image_proxy_settings_form:
+  title: 'Image proxy'
+  route_name: toolkit.admin_image_proxy_settings_form
+  description: 'Configure the image proxy.'
+  parent: system.admin_config_media

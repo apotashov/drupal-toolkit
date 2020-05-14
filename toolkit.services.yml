@@ -1,0 +1,30 @@
+services:
+  toolkit.contextual_entity:
+    class: Drupal\toolkit\ContextualEntity
+    arguments: ['@current_route_match', '@module_handler']
+  toolkit.jsonapi_generator:
+    class: Drupal\toolkit\JsonApiGenerator
+    arguments: ['@entity_type.manager', '@jsonapi.resource_type.repository', '@jsonapi.include_resolver', '@jsonapi.serializer']
+  paramconverter.entity_field_value:
+    class: Drupal\toolkit\ParamConverter\EntityFieldValueParamConverter
+    arguments: ['@entity_type.manager']
+    tags:
+      - { name: paramconverter }
+  paramconverter.entity_url_id:
+    class: Drupal\toolkit\ParamConverter\EntityUrlIdParamConverter
+    arguments: ['@entity_type.manager']
+    tags:
+      - { name: paramconverter }
+  paramconverter.entity_uuid:
+    class: Drupal\toolkit\ParamConverter\EntityUuidConverter
+    arguments: ['@entity.repository']
+    tags:
+      - { name: paramconverter }
+  toolkit.time:
+    class: Drupal\toolkit\Time
+    arguments: ['@config.factory', '@datetime.time']
+  logger.mail_log:
+    class: Drupal\toolkit\Logger\MailLog
+    arguments: ['@config.factory']
+    tags:
+      - { name: logger }

@@ -1,0 +1,225 @@
+<?php
+/**
+ * Core functionality of the toolkit module.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Config\FileStorage;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Database\Query\AlterableInterface;
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\StreamWrapper\PublicStream;
+
+/**
+ * Load all utility functions.
+ */
+require_once __DIR__ . '/toolkit.utility.inc';
+
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function toolkit_page_attachments_alter(array &$attachments) {
+  // Get contextual entity service.
+  $contextual_entity_service = \Drupal::service('toolkit.contextual_entity');
+
+  // Load the contextual entity for this page request.
+  $contextual_entity_info = $contextual_entity_service
+    ->getContextualEntityInfo();
+
+  // Expose the contextual entity info to JS.
+  $attachments['#attached']['drupalSettings']['contextualEntity'] = $contextual_entity_info;
+
+  // Attach image proxy domain to the JS settings.
+  $attachments['#attached']['drupalSettings']['imageProxy'] = toolkit_get_image_proxy_domain();
+}
+
+/**
+ * Implements hook_entity_insert().
+ */
+function toolkit_entity_insert(EntityInterface $entity) {
+  toolkit_invalidate_entity_bundle_list_cache($entity);
+}
+
+/**
+ * Implements hook_entity_update().
+ */
+function toolkit_entity_update(EntityInterface $entity) {
+  toolkit_invalidate_entity_bundle_list_cache($entity);
+}
+
+/**
+ * Implements hook_entity_delete().
+ */
+function toolkit_entity_delete(EntityInterface $entity) {
+  toolkit_invalidate_entity_bundle_list_cache($entity);
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function toolkit_entity_presave(EntityInterface $entity) {
+  // Check if this entity is using the URL ID trait.
+  if (entity_uses_trait($entity, 'Drupal\toolkit\EntityUrlIdTrait')) {
+    // Generate the URL ID.
+    // TODO: Is there any way to do this within the trait?
+    $entity->setUrlId();
+  }
+
+  // Check if this entity is using the last updated by trait.
+  if (entity_uses_trait($entity, 'Drupal\toolkit\EntityLastUpdatedByTrait')) {
+    // Set the last updated by user.
+    // TODO: Is there any way to do this within the trait?
+    $entity->setLastUpdatedBy();
+  }
+  // Check if this entity is using the published date trait.
+  if (entity_uses_trait($entity, 'Drupal\toolkit\EntityPublishedDateTrait')) {
+    // Set the published date.
+    // TODO: Is there any way to do this within the trait?
+    $entity->setPublishedDate();
+  }
+}
+
+/**
+ * Implements hook_jsonapi_entity_filter_access().
+ */
+function toolkit_jsonapi_entity_filter_access(EntityTypeInterface $entity_type, AccountInterface $account) {
+  // Check if this is a toolkit entity type.
+  // TODO: delete this?
+  if ($entity_type->entityClassImplements('Drupal\toolkit\ContentEntityInterface')) {
+    // Default to allow all users the ability to filter on all fields.
+    // If individual toolkit entity type filter access controls are needed, the
+    // providing module can implement this hook as well.
+    return [
+      JSONAPI_FILTER_AMONG_ALL => AccessResult::allowed(),
+    ];
+  }
+}
+
+/**
+ * Implements hook_query_TAG_alter().
+ */
+function toolkit_query_sort_by_random_alter(AlterableInterface $query) {
+  $query->orderRandom();
+}
+
+/**
+ * Implements hook_file_url_alter().
+ */
+function toolkit_file_url_alter(&$uri) {
+  // Exit if proxy domain is not set.
+  if (!$proxy_domain = toolkit_get_image_proxy_domain()) {
+    return FALSE;
+  }
+
+  // Exit if it's an image style.
+  if (strpos($uri, 'public://styles/') !== FALSE) {
+    return FALSE;
+  }
+
+  // Image extensions.
+  $extensions = [
+    'jpg',
+    'svg',
+    'png',
+    'gif',
+    'webp',
+    'tiff',
+    'psd',
+    'raw',
+    'bmp',
+    'heif',
+    'indd',
+  ];
+
+  $public_path = PublicStream::basePath();
+  $path_info = pathinfo($uri);
+
+  // Apply proxy domain to image files.
+  if (in_array(strtolower($path_info['extension']), $extensions)) {
+    $uri = $proxy_domain . '/' . str_replace('public:/', $public_path, $uri);
+  }
+}
+
+/**
+ * Implements hook_field_widget_form_alter().
+ */
+function toolkit_field_widget_form_alter(&$element, FormStateInterface &$form_state, $context) {
+  // Get the field type.
+  $field_type = $context['items']->getFieldDefinition()->getType();
+
+  // Check if the field is an entity reference field.
+  if ($field_type == 'entity_reference' && isset($element['target_id'])) {
+    // Get entity links.
+    $links = \Drupal::entityTypeManager()
+      ->getDefinition($element['target_id']['#target_type'])
+      ->get('links');
+
+    // Attach the JS which will provide edit links next to reference fields.
+    if (isset($links['edit-form'])) {
+      $element['target_id']['#attributes']['data-edit-form'] = preg_replace('/[{].*[}]/U', 'entity_id', $links['edit-form']);
+      $element['target_id']['#attached']['library'][] = 'toolkit/autocomplete-edit-link';
+    }
+  }
+}
+
+/**
+ * Implements hook_mail().
+ */
+function toolkit_mail($key, &$message, $params) {
+  switch ($key) {
+    case 'mail_log':
+      $message['subject'] = $params['subject'];
+      $message['body'][] = $params['body'];
+      break;
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function toolkit_form_system_logging_settings_alter(&$form, FormStateInterface $form_state) {
+  // Add a field to store an email address we'll mail serious log entries to.
+  $form['mail_log_email'] = [
+    '#type' => 'email',
+    '#title' => t('Alert email address'),
+    '#default_value' => \Drupal::config('toolkit.settings')->get('mail_log_email'),
+    '#description' => t('Optionally specify an email address that will be sent serious log entries which exceed warnings. Also, developers can force specific log entries be emailed if the "mail_log" contextual variable is passed in.'),
+  ];
+  $form['#submit'][] = 'toolkit_form_system_logging_settings_submit';
+}
+
+/**
+ * Submit handler for the system logging settings form.
+ */
+function toolkit_form_system_logging_settings_submit($form, FormStateInterface $form_state) {
+  \Drupal::configFactory()
+    ->getEditable('toolkit.settings')
+    ->set('mail_log_email', $form_state->getValue('mail_log_email'))
+    ->save();
+}
+
+/**
+ * Get the image proxy domain.
+ *
+ * @return string|null
+ *   The image proxy domain, if set, otherwise NULL.
+ */
+function toolkit_get_image_proxy_domain() {
+  return \Drupal::config('toolkit.settings')->get('image_proxy');
+}
+
+/**
+ * Invalidate cache using a list tag based on the entity type and bundle.
+ *
+ * This provides support for the cache tag:
+ *   [entity_type]_list:[bundle]
+ *
+ * @param Drupal\Core\Entity\EntityInterface $entity
+ *   An entity object.
+ */
+function toolkit_invalidate_entity_bundle_list_cache(EntityInterface $entity) {
+  Cache::invalidateTags([$entity->getEntityTypeId() . '_list:' . $entity->bundle()]);
+}

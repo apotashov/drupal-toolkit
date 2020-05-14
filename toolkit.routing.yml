@@ -1,0 +1,16 @@
+toolkit.views_entity_autocomplete:
+  path: '/views_entity_reference_autocomplete/{target_type}/{selection_handler}'
+  defaults:
+    _controller: '\Drupal\toolkit\Controller\ViewsEntityAutocompleteController::handleAutocomplete'
+  requirements:
+    _access: 'TRUE'
+
+toolkit.admin_image_proxy_settings_form:
+  path: '/admin/config/media/image-proxy'
+  defaults:
+    _form: '\Drupal\toolkit\Form\ImageProxySettingsForm'
+    _title: 'Image proxy'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE

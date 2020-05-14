@@ -1,0 +1,10 @@
+toolkit.settings:
+  type: config_object
+  label: 'Toolkit settings'
+  mapping:
+    image_proxy:
+      type: string
+      label: 'Image proxy domain'
+    mail_log_email:
+      type: string
+      label: 'Mail log email address'

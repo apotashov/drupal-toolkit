@@ -1,0 +1,7 @@
+autocomplete-edit-link:
+  js:
+    js/autocomplete-edit-link.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/jquery.once
