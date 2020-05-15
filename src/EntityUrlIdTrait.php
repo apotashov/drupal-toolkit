@@ -62,6 +62,9 @@ trait EntityUrlIdTrait {
     $url_id = \Drupal::token()
       ->replace($this->getUrlIdPattern(), [$this->getEntityTypeId() => $this]);
 
+    // Lowercase the string.
+    $url_id = strtolower($url_id);
+
     // Check if the pathauto alias cleaner service is available.
     if (\Drupal::hasService('pathauto.alias_cleaner')) {
       // Clean the string to be used.

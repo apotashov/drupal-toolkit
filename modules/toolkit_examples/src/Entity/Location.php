@@ -12,17 +12,17 @@ use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\ContentEntityInterface;
 
 /**
- * Defines the Event entity.
+ * Defines the Location entity.
  *
  * @ContentEntityType(
- *   id = "event",
- *   label = @Translation("Event"),
- *   label_collection = @Translation("Events"),
- *   label_singular = @Translation("event"),
- *   label_plural = @Translation("events"),
+ *   id = "location",
+ *   label = @Translation("Location"),
+ *   label_collection = @Translation("Locations"),
+ *   label_singular = @Translation("location"),
+ *   label_plural = @Translation("locations"),
  *   label_count = @PluralTranslation(
- *     singular = "@count event",
- *     plural = "@count events"
+ *     singular = "@count location",
+ *     plural = "@count locations"
  *   ),
  *   handlers = {
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
@@ -39,29 +39,27 @@ use Drupal\Core\Entity\ContentEntityInterface;
  *       "html" = "Drupal\toolkit\ContentEntityHtmlRouteProvider",
  *     },
  *   },
- *   base_table = "event",
- *   admin_permission = "administer event entities",
+ *   base_table = "location",
+ *   admin_permission = "administer location entities",
  *   entity_keys = {
  *     "id" = "id",
  *     "label" = "name",
  *     "uuid" = "uuid",
- *     "parent" = "location",
- *     "external_id" = "code",
+ *     "external_id" = "location_id",
  *   },
  *   links = {
- *     "canonical" = "/admin/structure/event/{event}",
- *     "add-form" = "/admin/structure/event/add",
- *     "edit-form" = "/admin/structure/event/{event}/edit",
- *     "delete-form" = "/admin/structure/event/{event}/delete",
- *     "collection" = "/admin/structure/event",
+ *     "canonical" = "/admin/structure/location/{location}",
+ *     "add-form" = "/admin/structure/location/add",
+ *     "edit-form" = "/admin/structure/location/{location}/edit",
+ *     "delete-form" = "/admin/structure/location/{location}/delete",
+ *     "collection" = "/admin/structure/location",
  *   },
- *   field_ui_base_route = "entity.event.collection"
+ *   field_ui_base_route = "entity.location.collection"
  * )
  */
-class Event extends ContentEntityBase implements ContentEntityInterface {
+class Location extends ContentEntityBase implements ContentEntityInterface {
 
   use EntityUrlIdTrait;
-  use EntityParentTrait;
   use EntityExternalIdTrait;
   use EntityContextualTrait;
 
@@ -69,7 +67,7 @@ class Event extends ContentEntityBase implements ContentEntityInterface {
    * {@inheritdoc}
    */
   public function getUrlIdPattern() {
-    return "[event:name]-[event:code]";
+    return "[location:name]";
   }
 
   /**
@@ -80,7 +78,7 @@ class Event extends ContentEntityBase implements ContentEntityInterface {
 
     $fields['name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Name'))
-      ->setDescription(t('The name of the event.'))
+      ->setDescription(t('The name of the location.'))
       ->setSettings([
         'max_length' => 255,
         'text_processing' => 0,
@@ -100,9 +98,9 @@ class Event extends ContentEntityBase implements ContentEntityInterface {
       ->setRequired(TRUE);
 
     // Unique field. Acts as the external ID.
-    $fields['code'] = BaseFieldDefinition::create('string')
+    $fields['location_id'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Code'))
-      ->setDescription(t('The event code.'))
+      ->setDescription(t('The location ID.'))
       ->setSettings([
         'max_length' => 255,
         'text_processing' => 0,
@@ -121,28 +119,6 @@ class Event extends ContentEntityBase implements ContentEntityInterface {
       ->setDisplayConfigurable('view', TRUE)
       ->addConstraint('UniqueField')
       ->setRequired(TRUE);
-
-    // References a location entity. Marked as parent field.
-    $fields['location'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Location'))
-      ->setDescription(t('The location this event belongs to.'))
-      ->setRequired(TRUE)
-      ->setSetting('target_type', 'location')
-      ->setSetting('handler', 'default')
-      ->setDisplayOptions('form', [
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 0,
-      ])
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-        'type' => 'entity_reference_label',
-        'settings' => [
-          'link' => TRUE,
-        ],
-        'weight' => 0,
-      ])
-      ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE);
 
     $fields += static::urlIdBaseFieldDefinitions($entity_type);
 

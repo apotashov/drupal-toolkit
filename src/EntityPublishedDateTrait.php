@@ -2,6 +2,9 @@
 
 namespace Drupal\toolkit;
 
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+
 /**
  * Provides a trait for storing the date when the entity was first published.
  *
@@ -54,7 +57,7 @@ trait EntityPublishedDateTrait {
     // forcing an update.
     if (($this->isPublished() && !$this->getPublishedDate()) || $force) {
       // Check if we don't have a published date to use.
-      if (!$$published_date) {
+      if (!$published_date) {
         // Get the current request datetime converted to UTC.
         $published_date = \Drupal::service('toolkit.time')
           ->getRequestDatetimeUtc();

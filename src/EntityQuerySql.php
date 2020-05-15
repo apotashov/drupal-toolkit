@@ -3,6 +3,7 @@
 namespace Drupal\toolkit;
 
 use Drupal\Core\Database\Query\SelectInterface;
+use Drupal\Core\Entity\Query\Sql\Query;
 
 /**
  * The SQL storage entity query class override.

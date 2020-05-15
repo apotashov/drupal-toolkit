@@ -3,6 +3,8 @@
 namespace Drupal\toolkit;
 
 use Drupal\user\UserInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 
 /**
  * Provides a trait for storing the user who last updated the entity.
