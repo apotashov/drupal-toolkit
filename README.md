@@ -16,17 +16,18 @@ The areas below list all included functionality and components.
 
 ### Classes (misc)
 
-- `JsonApiResponseControllerBase.php`: Base controller class to provider a controller than can return a JSON:API response with arbitrary entities and data.
+- `JsonApiResponseControllerBase.php`: Base controller class to provider a controller that can return a JSON:API response with arbitrary entities and data.
 - `JsAppElement.php`: A simple way to standardize the creation of DOM elements used to initialize JS apps, which can contain JSON:API entity data and arbitrary settings.
 
 ### Traits
 
+- `EntityContextualTrait.php`: Indicates that this entity type should be considered contextual in conditions more than just viewing the canonical route. See `ContextualEntity`.
 - `EntityCreatedTrait.php`: Get/set functions for entity creation time.
 - `EntityExternalIdTrait.php`: Get/set functions for a defined field that stores the entity external ID. Useful if entities are synced from external sources.
 - `EntityLastUpdatedByTrait.php`: Automatically track the user who last updated the entity.
 - `EntityUuidRouteTrait.php`: Allows for the UUID to be used in entity routes, rather than the entity ID.
 - `EntityParentTrait.php`: Defines a hierarchy between entities and allows for easy traversing. Extends the `ContextualEntity` functionality to automatically derive related entities.
-- `EntityPublishedDateTrait`: Store the date when the entity was first published.
+- `EntityPublishedDateTrait.php`: Store the date when the entity was first published.
 - `EntityUrlIdTrait.php`: Auto-generates a URL ID which can be used as an SEO-friendly route-parameter, rather than entity ID, and bypasses the need for extension path aliases. See class for a full explanation.
 
 ### Controllers

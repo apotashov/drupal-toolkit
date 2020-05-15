@@ -2,8 +2,6 @@
 
 namespace Drupal\toolkit\ParamConverter;
 
-use Drupal\Core\ParamConverter\ParamConverterInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -12,9 +10,9 @@ use Symfony\Component\Routing\Route;
  * Extension of EntityFieldValueParamConverter but forces the field to be
  * the URL ID.
  *
- * @see EntityUrlIdTrait.php
+ * @see EntityUrlIdTrait
  */
-class EntityUrlIdConverter implements EntityFieldValueParamConverter {
+class EntityUrlIdParamConverter extends EntityFieldValueParamConverter {
 
   /**
    * {@inheritdoc}

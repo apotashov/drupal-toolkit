@@ -16,7 +16,7 @@ services:
     tags:
       - { name: paramconverter }
   paramconverter.entity_uuid:
-    class: Drupal\toolkit\ParamConverter\EntityUuidConverter
+    class: Drupal\toolkit\ParamConverter\EntityUuidParamConverter
     arguments: ['@entity.repository']
     tags:
       - { name: paramconverter }

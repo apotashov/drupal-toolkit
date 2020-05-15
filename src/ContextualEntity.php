@@ -7,7 +7,17 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Entity\EntityInterface;
 
 /**
- * Handles determining the contextual entity for the current page request.
+ * Handles determining the contextual entities for the current page request.
+ *
+ * Contextual entities for the current page request will include:
+ *  - The entity being viewed at the canonical route.
+ *  - Any entities provided as route parameters that use EntityContextualTrait.
+ *  - All parents of contextual entities that use EntityParentTrait.
+ *  - All referenced entities using EntityContextualTrait of contextual entities.
+ *
+ * Contextual data is added to the JS settings to aid in decoupling.
+ *
+ * @see toolkit_page_attachments_alter()
  */
 class ContextualEntity implements ContextualEntityInterface {
 
@@ -62,8 +72,8 @@ class ContextualEntity implements ContextualEntityInterface {
             // Use this as the contextual entity.
             $contextual_entities[] = $parameter;
           }
-          // If entity from route is a toolkit entity.
-          elseif ($this->isEntityToolkit($parameter)) {
+          // If entity from route is uses the contextual trait.
+          elseif ($this->entityUsesContextualTrait($parameter)) {
             // Also use this as the contextual entity.
             $contextual_entities[] = $parameter;
           }
@@ -84,9 +94,7 @@ class ContextualEntity implements ContextualEntityInterface {
         $info[$contextual_entity->uuid()] = $this->getEntityInfo($contextual_entity);
 
         // Store info about the parent entities.
-        // TODO: We may want to get references even if it's not a toolkit rather
-        // than just parents.
-        if ($this->isEntityToolkit($contextual_entity)) {
+        if ($this->entityUsesParentTrait($contextual_entity)) {
           foreach ($contextual_entity->getParents() as $parent) {
             $info[$parent->uuid()] = $this->getEntityInfo($parent);
           }
@@ -98,8 +106,10 @@ class ContextualEntity implements ContextualEntityInterface {
             $info[$parent->uuid()] = $this->getEntityInfo($parent);
 
             // Store the info for the grandparents.
-            foreach ($parent->getParents() as $grandparent) {
-              $info[$grandparent->uuid()] = $this->getEntityInfo($grandparent);
+            if ($this->entityUsesParentTrait($parent)) {
+              foreach ($parent->getParents() as $grandparent) {
+                $info[$grandparent->uuid()] = $this->getEntityInfo($grandparent);
+              }
             }
           }
         }
@@ -154,8 +164,8 @@ class ContextualEntity implements ContextualEntityInterface {
     // Gather extra data on a given entity.
     $info['data'] = $this->moduleHandler->invokeAll('contextual_entity_info', [$entity]);
 
-    // If an entity is a toolkit entity.
-    if ($this->isEntityToolkit($entity)) {
+    // Check if the entity has a URL ID.
+    if (entity_uses_trait($entity, 'Drupal\toolkit\EntityUrlIdTrait')) {
       // If entity has URL ID field.
       if ($url_id = $entity->getUrlId()) {
         // Include URL ID in extra data on a given entity.
@@ -167,18 +177,29 @@ class ContextualEntity implements ContextualEntityInterface {
   }
 
   /**
-   * Helper function to determine if an entity is a toolkit entity.
-   *
-   * A toolkit entity implements the ContentEntityInterface class.
+   * Helper function to determine if an entity is uses the contextual trait.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   An entity object.
    *
    * @return bool
-   *   TRUE if the entity is toolkit, otherwise FALSE.
+   *   TRUE if the entity uses the contextual trait, otherwise FALSE.
    */
-  public function isEntityToolkit(EntityInterface $entity) {
-    return $entity instanceof ContentEntityInterface;
+  public function entityUsesContextualTrait(EntityInterface $entity) {
+    return entity_uses_trait($entity, 'Drupal\toolkit\EntityContextualTrait');
+  }
+
+  /**
+   * Helper function to determine if an entity is uses the parent trait.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   An entity object.
+   *
+   * @return bool
+   *   TRUE if the entity uses the parent trait, otherwise FALSE.
+   */
+  public function entityUsesParentTrait(EntityInterface $entity) {
+    return entity_uses_trait($entity, 'Drupal\toolkit\EntityParentTrait');
   }
 
   /**
@@ -205,10 +226,10 @@ class ContextualEntity implements ContextualEntityInterface {
         if ($field->getType() == 'entity_reference') {
           // Check if a reference is available.
           if ($reference = $entity->get($field_name)->entity) {
-            // Check if the parent is a toolkit entity.
+            // Check if the parent uses the contextual trait.
             // TODO: We should see if we can determine this before loading the
             // entity based on the field settings.
-            if ($this->isEntityToolkit($reference)) {
+            if ($this->entityUsesContextualTrait($reference)) {
               // Store the reference.
               $references[$reference->uuid()] = $reference;
             }

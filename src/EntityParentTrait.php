@@ -99,8 +99,10 @@ trait EntityParentTrait {
       $parents[] = $parent;
 
       // Continue searching.
-      if ($grand_parents = $parent->getParents()) {
-        $parents = array_merge($parents, $grand_parents);
+      if (entity_uses_trait($parent, 'Drupal\toolkit\EntityParentTrait')) {
+        if ($grand_parents = $parent->getParents()) {
+          $parents = array_merge($parents, $grand_parents);
+        }
       }
     }
 

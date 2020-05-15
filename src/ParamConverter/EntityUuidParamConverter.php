@@ -7,11 +7,9 @@ use Drupal\Core\ParamConverter\ParamConverterInterface;
 use Symfony\Component\Routing\Route;
 
 /**
- * Class EntityUuidConverter.
- *
  * Parameter converter for entity UUIDs.
  */
-class EntityUuidConverter implements ParamConverterInterface {
+class EntityUuidParamConverter implements ParamConverterInterface {
 
   /**
    * The entity repository.

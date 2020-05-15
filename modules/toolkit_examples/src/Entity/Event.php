@@ -5,6 +5,7 @@ namespace Drupal\toolkit_examples\Entity;
 use Drupal\toolkit\EntityUrlIdTrait;
 use Drupal\toolkit\EntityParentTrait;
 use Drupal\toolkit\EntityExternalIdTrait;
+use Drupal\toolkit\EntityContextualTrait;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\ContentEntityBase;
@@ -64,6 +65,7 @@ class Event extends ContentEntityBase implements ContentEntityInterface {
   use EntityUrlIdTrait;
   use EntityParentTrait;
   use EntityExternalIdTrait;
+  use EntityContextualTrait;
 
   /**
    * {@inheritdoc}

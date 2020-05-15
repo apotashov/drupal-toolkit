@@ -89,6 +89,7 @@ class ContentEntityHtmlRouteProvider extends AdminHtmlRouteProvider {
    *   TRUE if the canonical route should be restricted, otherwise FALSE.
    */
   public function restrictCanonicalRoute() {
+    // TODO: Change to a variable?
     return FALSE;
   }
 
