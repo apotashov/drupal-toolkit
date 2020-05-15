@@ -26,11 +26,9 @@ trait EntityParentTrait {
   /**
    * Get the parent entity reference entity type ID.
    *
-   * This should automatically derive a value using getParentReferenceFieldName().
-   *
    * @return string|null
-   *   The parent entity reference target entity type ID, or NULL if there is not
-   *   one defined.
+   *   The parent entity reference target entity type ID, or NULL if there is
+   *   not one defined.
    */
   public function getParentReferenceEntityTypeId() {
     // Get the parent reference field name.
@@ -41,8 +39,10 @@ trait EntityParentTrait {
   }
 
   /**
-   * Get the parent entity, if one is defined and present, either one or infinite
-   * levels up the relationship tree.
+   * Get the parent entity.
+   *
+   * If one is defined and present, either one or infinite levels up the
+   * relationship tree.
    *
    * @param string|null $parent_entity_type
    *   The parent entity type to search for. If omitted, the type used in

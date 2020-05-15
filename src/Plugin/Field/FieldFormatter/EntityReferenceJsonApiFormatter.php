@@ -10,7 +10,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
-
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Generic field formatter for rendering JSON:API markup of referenced entities.
@@ -25,6 +25,8 @@ use Drupal\Core\Form\FormStateInterface;
  * )
  */
 class EntityReferenceJsonApiFormatter extends EntityReferenceFormatterBase implements ContainerFactoryPluginInterface {
+
+  use StringTranslationTrait;
 
   /**
    * The JSON API markup generator service.
@@ -95,7 +97,7 @@ class EntityReferenceJsonApiFormatter extends EntityReferenceFormatterBase imple
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $elements['js_element_class'] = [
-      '#title' => t('The class to attach to the HTML element that contains JSON data'),
+      '#title' => $this->t('The class to attach to the HTML element that contains JSON data'),
       '#type' => 'textfield',
       '#default_value' => $this->getSetting('js_element_class'),
     ];
@@ -109,7 +111,7 @@ class EntityReferenceJsonApiFormatter extends EntityReferenceFormatterBase imple
   public function settingsSummary() {
     $element_class = $this->getSetting('js_element_class');
     $summary = [];
-    $summary[] = $element_class ? t('%class class is used', ['%class' => $element_class]) : t('Default class is used');
+    $summary[] = $element_class ? $this->t('%class class is used', ['%class' => $element_class]) : $this->t('Default class is used');
     return $summary;
   }
 
@@ -137,7 +139,7 @@ class EntityReferenceJsonApiFormatter extends EntityReferenceFormatterBase imple
     $element[0] = $vue_element->build();
 
     $entities = [];
-    foreach ($this->getEntitiesToView($items, $langcode) as $delta => $entity) {
+    foreach ($this->getEntitiesToView($items, $langcode) as $entity) {
       // Collect referenced entities.
       $entities[] = $entity;
     }

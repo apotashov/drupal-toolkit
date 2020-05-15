@@ -21,7 +21,6 @@ use Drupal\migrate\Row;
  *      plugin: url_add_protocol_if_missing
  *      source: url
  * @endcode
- *
  */
 class UrlAddProtocolIfMissing extends ProcessPluginBase {
 

@@ -7,7 +7,7 @@ use Drupal\Core\Entity\Routing\AdminHtmlRouteProvider;
 use Symfony\Component\Routing\Route;
 
 /**
- * Provides routes for Toolkit entities.
+ * Provides routes for content entities.
  *
  * @ingroup toolkit
  *
@@ -15,6 +15,18 @@ use Symfony\Component\Routing\Route;
  * @see \Drupal\Core\Entity\Routing\DefaultHtmlRouteProvider
  */
 class ContentEntityHtmlRouteProvider extends AdminHtmlRouteProvider {
+
+  /**
+   * Determine if the canonical route should be restricted.
+   *
+   * If restricted, only users with edit access will be able to view the
+   * canonical route. This is useful if you want to grant view access to this
+   * entity type, but you don't want user's viewing the canonical route; which
+   * can be the case with web services.
+   *
+   * @var bool
+   */
+  protected $restrictCanonicalRoute = FALSE;
 
   /**
    * {@inheritdoc}
@@ -33,7 +45,7 @@ class ContentEntityHtmlRouteProvider extends AdminHtmlRouteProvider {
     }
 
     // Check if the canonical route should be restricted.
-    if ($this->restrictCanonicalRoute()) {
+    if ($this->restrictCanonicalRoute) {
       // Load the canonical route.
       if ($route = $collection->get("entity.{$entity_type_id}.canonical")) {
         // Change the permission to edit.
@@ -75,22 +87,6 @@ class ContentEntityHtmlRouteProvider extends AdminHtmlRouteProvider {
    */
   protected function getSettingsFormRoute(EntityTypeInterface $entity_type) {
     return NULL;
-  }
-
-  /**
-   * Determine if the canonical route should be restricted.
-   *
-   * If restricted, only users with edit access will be able to view the
-   * canonical route. This is useful if you want to grant view access to this
-   * entity type, but you don't want user's viewing the canonical route; which
-   * can be the case with web services.
-   *
-   * @return bool
-   *   TRUE if the canonical route should be restricted, otherwise FALSE.
-   */
-  public function restrictCanonicalRoute() {
-    // TODO: Change to a variable?
-    return FALSE;
   }
 
   /**

@@ -8,6 +8,9 @@ use Drupal\Component\Utility\Unicode;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Controller for views autocomplete filter requests.
+ */
 class ViewsEntityAutocompleteController extends EntityAutocompleteController {
 
   /**

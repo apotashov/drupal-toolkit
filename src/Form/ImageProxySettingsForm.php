@@ -36,7 +36,7 @@ class ImageProxySettingsForm extends ConfigFormBase {
       '#type' => 'url',
       '#title' => $this->t('Image proxy domain'),
       '#default_value' => $config->get('image_proxy'),
-      '#description' => $this->t('All image URLs will be rewritten to use this domain rather than the current site domain. Provide a domain with no trailing slashes, for example, "https://images.proxydomain.com".')
+      '#description' => $this->t('All image URLs will be rewritten to use this domain rather than the current site domain. Provide a domain with no trailing slashes, for example, "https://images.proxydomain.com".'),
     ];
 
     return parent::buildForm($form, $form_state);
@@ -60,12 +60,12 @@ class ImageProxySettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-   public function submitForm(array &$form, FormStateInterface $form_state) {
-     parent::submitForm($form, $form_state);
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    parent::submitForm($form, $form_state);
 
-     $this->config('toolkit.settings')
-       ->set('image_proxy', $form_state->getValue('image_proxy'))
-       ->save();
-   }
+    $this->config('toolkit.settings')
+      ->set('image_proxy', $form_state->getValue('image_proxy'))
+      ->save();
+  }
 
 }

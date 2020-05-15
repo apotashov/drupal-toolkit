@@ -5,8 +5,7 @@ namespace Drupal\toolkit;
 use Drupal\Core\Entity\ContentEntityStorageInterface;
 
 /**
- * Defines the storage handler class interface for revisionable toolkit content
- * entities.
+ * Storage handler interface for revisionable content entities.
  *
  * @ingroup toolkit
  */

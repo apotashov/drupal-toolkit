@@ -178,14 +178,14 @@ class RevisionRevertForm extends ConfirmFormBase {
       [
         '%entity_type_label' => $entity_type_label,
         '%title' => $this->revision->label(),
-        '%revision' => $this->revision->getRevisionId()
+        '%revision' => $this->revision->getRevisionId(),
       ]
     );
     $this->messenger()->addMessage(
       t('%entity_type_label %title has been reverted to the revision from %revision-date.', [
         '%entity_type_label' => $entity_type_label,
         '%title' => $this->revision->label(),
-        '%revision-date' => $this->dateFormatter->format($original_revision_timestamp)
+        '%revision-date' => $this->dateFormatter->format($original_revision_timestamp),
       ])
     );
     $form_state->setRedirect(

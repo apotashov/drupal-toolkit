@@ -11,8 +11,8 @@ use Drupal\migrate\MigrateSkipRowException;
  * Skips processing the current row when a source value is not equal to value.
  *
  * The skip_row_if_value_is_not process plugin checks whether a value is not the
- * same as a given value. If the value is not the same, a MigrateSkipRowException
- * is thrown, otherwise the value is returned.
+ * same as a given value. If the value is not the same, a
+ * MigrateSkipRowException is thrown, otherwise the value is returned.
  *
  * Available configuration keys:
  * - index: The source property to check for.

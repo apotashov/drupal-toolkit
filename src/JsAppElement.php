@@ -2,8 +2,6 @@
 
 namespace Drupal\toolkit;
 
-use Drupal\Core\Cache\CacheableMetadata;
-use Drupal\toolkit\Entity\SponsorInterface;
 use Drupal\Component\Serialization\Json;
 
 /**
@@ -95,7 +93,7 @@ class JsAppElement {
    * @param string $key
    *   The key of JsAppElement::$settings to set.
    * @param mixed $value
-   *   The value to set for the provided key
+   *   The value to set for the provided key.
    */
   public function setSetting(string $key, $value) {
     $this->settings[$key] = $value;
@@ -117,6 +115,7 @@ class JsAppElement {
    * Sets a title in the settings.
    *
    * @param string $title
+   *   The element title.
    */
   public function setTitle(string $title) {
     $this->setSetting('title', $title);
@@ -152,7 +151,7 @@ class JsAppElement {
     $build = [
       '#type' => 'html_tag',
       '#tag' => 'div',
-      '#value' => ''
+      '#value' => '',
     ];
 
     // Add id.

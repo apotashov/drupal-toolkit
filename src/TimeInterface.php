@@ -64,7 +64,7 @@ interface TimeInterface {
   public function getRequestDatetimeUtc();
 
   /**
-   * Convert a UTC datetime string to a timestamp according to the local timezone.
+   * Convert a UTC datetime string to a timestamp in the local timezone.
    *
    * @param string $datetime
    *   A datetime string.
@@ -83,7 +83,7 @@ interface TimeInterface {
    *   The timezone to convert from. Defaults to the site's current timezone.
    * @param string $tz_to
    *   The timezone to convert to. Defaults to the site's current timezone.
-
+   *
    * @return \DateTime|null
    *   A DateTime object, or NULL if a timezone could not be found.
    */

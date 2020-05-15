@@ -1,10 +1,12 @@
 <?php
+
 /**
  * @file
- *   Store all utility functions.
+ * Store all utility functions.
  */
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Config\FileStorage;
 
 /**
  * Update config object by the given module and config object name.
@@ -40,7 +42,7 @@ function module_update_config(string $module, string $name, string $config_dir =
  */
 function revert_feature(string $feature) {
   // There seems to be no better way to do this.
-  module_load_include('inc', 'features','drush/features.drush8');
+  module_load_include('inc', 'features', 'drush/features.drush8');
   drush_set_context('DRUSH_AFFIRMATIVE', TRUE);
   drush_features_import($feature);
 }
@@ -132,8 +134,7 @@ function entity_get_file_url(EntityInterface $entity, string $field_name = NULL,
  * @param string $trait
  *   The trait class.
  *
- *
- * @return boolean
+ * @return bool
  *   TRUE if the entity is using the given trait, otherwise FALSE.
  */
 function entity_uses_trait(EntityInterface $entity, string $trait) {
@@ -149,7 +150,7 @@ function entity_uses_trait(EntityInterface $entity, string $trait) {
  * @param \Drupal\Core\Entity\EntityInterface $entity
  *   The entity to check.
  *
- * @return boolean
+ * @return bool
  *   TRUE if the entity is publishable, otherwise FALSE.
  */
 function entity_is_publishable(EntityInterface $entity) {
@@ -168,7 +169,8 @@ function entity_is_publishable(EntityInterface $entity) {
  *
  * @param \Drupal\Core\Entity\EntityInterface $entity
  *   The entity to check.
- * @return boolean
+ *
+ * @return bool
  *   TRUE if the entity has encountered a live change, otherwise FALSE.
  */
 function entity_has_live_change(EntityInterface $entity) {
@@ -185,10 +187,13 @@ function entity_has_live_change(EntityInterface $entity) {
   }
 
   // Determine if the previous version was published.
-  $original_published = !empty($entity->original) ? $entity->original->{$published_field}->value : NULL;
+  $original_published = !empty($entity->original) ? $entity->original->isPublished() : NULL;
 
   // Check if the original was published.
   if ($original_published) {
+    // Get the entity type definition.
+    $entity_type = $entity->getEntityType();
+
     // If entity support translation.
     if ($entity_type->hasKey('langcode')) {
       // Check if the language differs.

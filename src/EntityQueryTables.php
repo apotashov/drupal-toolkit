@@ -5,7 +5,6 @@ namespace Drupal\toolkit;
 use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\Core\Entity\Query\Sql\Tables;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Entity\EntityFieldManagerInterface;
 
 /**
  * Override of Drupal\Core\Entity\Query\Sql\Tables.
@@ -22,7 +21,10 @@ class EntityQueryTables extends Tables {
   protected $entityFieldManager;
 
   /**
+   * Construct an EntityQueryTables object.
+   *
    * @param \Drupal\Core\Database\Query\SelectInterface $sql_query
+   *   The select query.
    */
   public function __construct(SelectInterface $sql_query) {
     parent::__construct($sql_query);
@@ -59,6 +61,7 @@ class EntityQueryTables extends Tables {
    *   The field name.
    * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
    *   The entity type.
+   *
    * @return bool
    *   TRUE if the field is part of the entity base table, otherwise FALSE.
    */

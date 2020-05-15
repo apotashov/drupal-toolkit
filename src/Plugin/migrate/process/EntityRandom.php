@@ -25,7 +25,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *      plugin: entity_random
  *      entity_type_id: sport
  * @endcode
- *
  */
 class EntityRandom extends ProcessPluginBase implements ContainerFactoryPluginInterface {
 
@@ -52,6 +51,8 @@ class EntityRandom extends ProcessPluginBase implements ContainerFactoryPluginIn
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
+   * @param \Drupal\migrate\Plugin\MigrationInterface $migration
+   *   The migration.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
    */

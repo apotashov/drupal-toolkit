@@ -42,7 +42,6 @@ trait EntityPublishedDateTrait {
    *
    * @param string|null $published_date
    *   The published date string, or NULL, to use the current time.
-   *
    * @param bool $force
    *   TRUE if the published date should be set even if the entity is not
    *   published, otherwise FALSE. Defaults to FALSE.

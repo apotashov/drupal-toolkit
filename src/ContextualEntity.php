@@ -13,7 +13,8 @@ use Drupal\Core\Entity\EntityInterface;
  *  - The entity being viewed at the canonical route.
  *  - Any entities provided as route parameters that use EntityContextualTrait.
  *  - All parents of contextual entities that use EntityParentTrait.
- *  - All referenced entities using EntityContextualTrait of contextual entities.
+ *  - All entities using EntityContextualTrait that are referenced to contextual
+ *    entities  of contextual entities.
  *
  * Contextual data is added to the JS settings to aid in decoupling.
  *
@@ -49,7 +50,7 @@ class ContextualEntity implements ContextualEntityInterface {
   }
 
   /**
-   * {inheritdoc}
+   * {@inheritdoc}
    */
   public function getContextualEntityInfo() {
     // Store the entity info.
@@ -61,7 +62,7 @@ class ContextualEntity implements ContextualEntityInterface {
     // Check if there was no contextual entity.
     if (!$contextual_entities) {
       // Iterate the route parameters.
-      foreach ($this->currentRouteMatch->getParameters()->all() as $key => $parameter) {
+      foreach ($this->currentRouteMatch->getParameters()->all() as $parameter) {
         // Check if this parameter is an entity.
         if (is_object($parameter) && ($parameter instanceof EntityInterface)) {
           // Extract the entity type.
@@ -120,7 +121,7 @@ class ContextualEntity implements ContextualEntityInterface {
   }
 
   /**
-   * {inheritdoc}
+   * {@inheritdoc}
    */
   public function setContextualEntity($entity = NULL, $reset = FALSE) {
     $contextual_entities = &drupal_static(__METHOD__, []);
@@ -203,10 +204,10 @@ class ContextualEntity implements ContextualEntityInterface {
   }
 
   /**
-   * Helper function to extract all toolkit entity references for a given entity.
+   * Helper function to extract entity references for a given entity.
    *
    * This looks at config entity reference fields for references that contain
-   * entities that implement ContentEntityInterface.
+   * entities that use the contextual trait.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   An entity object.

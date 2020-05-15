@@ -82,7 +82,7 @@ class Event extends ContentEntityBase implements ContentEntityInterface {
 
     $fields['name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Name'))
-      ->setDescription(t('The name of the :type.', [':type' => $entity_type->getLowercaseLabel()]))
+      ->setDescription(t('The name of the event.'))
       ->setSettings([
         'max_length' => 255,
         'text_processing' => 0,
@@ -104,7 +104,7 @@ class Event extends ContentEntityBase implements ContentEntityInterface {
     // Unique field. Acts as the external ID.
     $fields['code'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Code'))
-      ->setDescription(t('The :type code.', [':type' => $entity_name]))
+      ->setDescription(t('The event code.'))
       ->setSettings([
         'max_length' => 255,
         'text_processing' => 0,
@@ -127,10 +127,7 @@ class Event extends ContentEntityBase implements ContentEntityInterface {
     // References a sport entity. Marked as parent field.
     $fields['parent'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Parent'))
-      ->setDescription(
-        t('The sport this :type belongs to.', [
-          ':type' => $entity_name
-        ]))
+      ->setDescription(t('The entity this event belongs to.'))
       ->setRequired(TRUE)
       ->setSetting('target_type', 'node')
       ->setSetting('handler', 'default')

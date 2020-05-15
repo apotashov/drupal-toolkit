@@ -80,8 +80,7 @@ class ContentEntityAccessControlHandler extends EntityAccessControlHandler {
   }
 
   /**
-   * Helper function to provide an access result for a given permission or
-   * the admin permission of the given entity type.
+   * Provide an access result for a permission or entity admin permission.
    *
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account to check access for.

@@ -4,6 +4,7 @@ namespace Drupal\toolkit;
 
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\EntityTypeInterface;
+
 /**
  * Provides a trait for generating a URL ID for a given entity.
  *

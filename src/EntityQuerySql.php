@@ -2,14 +2,12 @@
 
 namespace Drupal\toolkit;
 
-use Drupal\Core\Entity\Query\Sql\Query;
-use Drupal\Core\Database\Connection;
 use Drupal\Core\Database\Query\SelectInterface;
 
 /**
  * The SQL storage entity query class override.
  *
- * This is injected via \Drupal\toolkit\EntityQueryFactorySql
+ * This is injected via \Drupal\toolkit\EntityQueryFactorySql.
  *
  * This override is needed to attempt to bypass several core issues with entity
  * queries. 1) It seems that even if the sorting field is a base, core is still

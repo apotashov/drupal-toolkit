@@ -149,14 +149,14 @@ class RevisionDeleteForm extends ConfirmFormBase {
       [
         '%entity_type_label' => $entity_type_label,
         '%title' => $this->revision->label(),
-        '%revision' => $this->revision->getRevisionId()
+        '%revision' => $this->revision->getRevisionId(),
       ]
     );
     $this->messenger()->addMessage(
       t('Revision from %revision-date of %entity_type_label %title has been deleted.', [
         '%revision-date' => $this->dateFormatter->format($this->revision->getRevisionCreationTime()),
         '%entity_type_label' => $entity_type_label,
-        '%title' => $this->revision->label()
+        '%title' => $this->revision->label(),
       ])
     );
     $form_state->setRedirect(

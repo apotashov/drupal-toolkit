@@ -14,13 +14,13 @@ use Drupal\Core\Entity\EntityInterface;
  * in this hook will be added to the `data` array of each entity in the JS
  * settings.
  *
- * @see Drupal\toolkit\ContextualEntity
- *
  * @param \Drupal\Core\Entity\EntityInterface $entity
  *   An entity object.
  *
  * @return array
  *   Associative array with entity extra information.
+ *
+ * @see Drupal\toolkit\ContextualEntity
  */
 function hook_contextual_entity_info(EntityInterface $entity) {
   if ($entity->getEntityTypeId() == 'team') {

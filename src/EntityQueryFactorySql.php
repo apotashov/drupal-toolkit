@@ -4,7 +4,6 @@ namespace Drupal\toolkit;
 
 use Drupal\Core\Entity\Query\Sql\QueryFactory;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\toolkit\EntityQuerySql;
 
 /**
  * Factory class creating entity query objects for the SQL backend.

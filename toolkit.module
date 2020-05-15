@@ -1,14 +1,12 @@
 <?php
+
 /**
+ * @file
  * Core functionality of the toolkit module.
  */
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\StreamWrapper\PublicStream;
@@ -79,22 +77,6 @@ function toolkit_entity_presave(EntityInterface $entity) {
     // Set the published date.
     // TODO: Is there any way to do this within the trait?
     $entity->setPublishedDate();
-  }
-}
-
-/**
- * Implements hook_jsonapi_entity_filter_access().
- */
-function toolkit_jsonapi_entity_filter_access(EntityTypeInterface $entity_type, AccountInterface $account) {
-  // Check if this is a toolkit entity type.
-  // TODO: delete this?
-  if ($entity_type->entityClassImplements('Drupal\toolkit\ContentEntityInterface')) {
-    // Default to allow all users the ability to filter on all fields.
-    // If individual toolkit entity type filter access controls are needed, the
-    // providing module can implement this hook as well.
-    return [
-      JSONAPI_FILTER_AMONG_ALL => AccessResult::allowed(),
-    ];
   }
 }
 

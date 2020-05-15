@@ -65,7 +65,7 @@ class MailLog implements LoggerInterface {
         // Build message placeholders.
         $placeholders = [];
         foreach ($context as $key => $value) {
-          if (!in_array(substr($key, 0 , 1), ['@', ':', '%'])) {
+          if (!in_array(substr($key, 0, 1), ['@', ':', '%'])) {
             $key = ':' . $key;
           }
           $placeholders[$key] = $value;
@@ -73,13 +73,13 @@ class MailLog implements LoggerInterface {
 
         // Build the email param.
         $params = [
-          'subject' => t('@level was logged in @channel', ['@level' => $levels[$level], '@channel' => $context['channel']]),
+          'subject' => strtr('@level was logged in @channel', ['@level' => $levels[$level], '@channel' => $context['channel']]),
           'body' => strtr($message, $placeholders),
         ];
 
         // Send the email.
-        // Injecting this service seems to cause circular dependency issues
-        // with symfony for some reason.
+        // TODO: Injecting this service seems to cause circular dependency
+        // issues with Symfony for some reason.
         \Drupal::service('plugin.manager.mail')
           ->mail('toolkit', 'mail_log', $email_address, 'en', $params);
 
