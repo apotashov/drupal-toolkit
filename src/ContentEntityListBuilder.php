@@ -14,6 +14,7 @@ class ContentEntityListBuilder extends EntityListBuilder {
    * {@inheritdoc}
    */
   public function buildHeader() {
+    // TODO: Extend this to include more fields.
     $header['id'] = $this->t('ID');
     $header['label'] = $this->t('Label');
     return $header + parent::buildHeader();

@@ -12,6 +12,7 @@ The areas below list all included functionality and components.
 
 - `ContentEntityAccessControlHandler.php`: Access control handler for content entities that can be used for most cases, or extended upon. Includes ability to easily restrict given fields to admin-only.
 - `ContentEntityHtmlRouteProvider.php`: Html route provider for content entities that can easily provide a defined settings form, support for revisionable entities, and the ability to restrict canonical access so that entities can be returned via API but direct access restricted to editors/admins.
+- `ContentEntityListBuilder.php`: More usable version of `EntityListBuilder`.
 - `ContentEntityRevisionStorage.php`: Flexible entity storage handler for revisionable entities.
 
 ### Classes (misc)
