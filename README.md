@@ -29,7 +29,7 @@ The areas below list all included functionality and components.
 - `EntityUuidRouteTrait.php`: Allows for the UUID to be used in entity routes, rather than the entity ID.
 - `EntityParentTrait.php`: Defines a hierarchy between entities and allows for easy traversing. Extends the `ContextualEntity` functionality to automatically derive related entities.
 - `EntityPublishedDateTrait.php`: Store the date when the entity was first published.
-- `EntityUrlIdTrait.php`: Auto-generates a URL ID which can be used as an SEO-friendly route-parameter, rather than entity ID, and bypasses the need for extension path aliases. See class for a full explanation.
+- `EntityUrlIdTrait.php`: Auto-generates a URL ID which can be used as an SEO-friendly route-parameter, rather than entity ID, and bypasses the need for extensive path aliases. See class for a full explanation.
 
 ### Controllers
 
