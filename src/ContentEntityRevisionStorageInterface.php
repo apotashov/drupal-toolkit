@@ -2,24 +2,23 @@
 
 namespace Drupal\toolkit;
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\ContentEntityStorageInterface;
 
 /**
  * Storage handler interface for revisionable content entities.
- *
- * @ingroup toolkit
  */
 interface ContentEntityRevisionStorageInterface extends ContentEntityStorageInterface {
 
   /**
-   * Gets a list of entity revision IDs for a specific toolkit content entity.
+   * Gets a list of entity revision IDs for a specific content entity.
    *
-   * @param \Drupal\toolkit\ContentEntityBase $entity
-   *   The toolkit content entity.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The content entity.
    *
    * @return int[]
-   *   toolkit content entity revision IDs (in ascending order).
+   *   Content entity revision IDs (in ascending order).
    */
-  public function revisionIds(ContentEntityBase $entity);
+  public function revisionIds(EntityInterface $entity);
 
 }

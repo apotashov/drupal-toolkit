@@ -19,7 +19,7 @@ class RevisionDeleteForm extends ConfirmFormBase {
   /**
    * The Entity revision.
    *
-   * @var \Drupal\toolkit\ContentEntityInterface
+   * @var \Drupal\Core\Entity\EntityInterface
    */
   protected $revision;
 

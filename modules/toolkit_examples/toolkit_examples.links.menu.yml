@@ -1,0 +1,17 @@
+entity.location.collection:
+  title: 'Locations'
+  route_name: entity.location.collection
+  description: 'List and manage location entities'
+  parent: system.admin_structure
+
+entity.event.collection:
+  title: 'Events'
+  route_name: entity.event.collection
+  description: 'List and manage event entities'
+  parent: system.admin_structure
+
+entity.article.collection:
+  title: 'Articles'
+  route_name: entity.article.collection
+  description: 'List and manage article entities'
+  parent: system.admin_structure

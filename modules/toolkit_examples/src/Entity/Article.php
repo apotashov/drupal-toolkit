@@ -34,12 +34,12 @@ use Drupal\user\EntityOwnerTrait;
  *   handlers = {
  *     "storage" = "Drupal\toolkit\ContentEntityRevisionStorage",
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
- *     "list_builder" = "Drupal\Core\Entity\EntityListBuilder",
+ *     "list_builder" = "Drupal\toolkit\ContentEntityListBuilder",
  *     "views_data" = "Drupal\views\EntityViewsData",
  *     "form" = {
  *       "default" = "Drupal\toolkit\Form\RevisionableContentEntityForm",
- *       "add" = "Drupal\Core\Entity\ContentEntityForm",
- *       "edit" = "Drupal\Core\Entity\ContentEntityForm",
+ *       "add" = "Drupal\toolkit\Form\RevisionableContentEntityForm",
+ *       "edit" = "Drupal\toolkit\Form\RevisionableContentEntityForm",
  *       "delete" = "Drupal\Core\Entity\ContentDeleteEntityForm",
  *     },
  *     "access" = "Drupal\toolkit\ContentEntityAccessControlHandler",
@@ -48,6 +48,7 @@ use Drupal\user\EntityOwnerTrait;
  *     },
  *   },
  *   base_table = "article",
+ *   revision_table = "article_revision",
  *   admin_permission = "administer article entities",
  *   entity_keys = {
  *     "id" = "id",
@@ -62,10 +63,10 @@ use Drupal\user\EntityOwnerTrait;
  *   },
  *   links = {
  *     "canonical" = "/article/{article}",
- *     "add-form" = "/admin/content/article/add",
- *     "edit-form" = "/admin/content/article/{article}/edit",
- *     "delete-form" = "/admin/content/article/{article}/delete",
- *     "collection" = "/admin/content/article",
+ *     "add-form" = "/admin/structure/article/add",
+ *     "edit-form" = "/article/{article}/edit",
+ *     "delete-form" = "/article/{article}/delete",
+ *     "collection" = "/admin/structure/article",
  *     "version-history" = "/article/{article}/revisions",
  *     "revision" = "/article/{article}/revisions/{article_revision}/view",
  *     "revision_revert" = "/article/{article}/revisions/{article_revision}/revert",
@@ -179,8 +180,8 @@ class Article extends ContentEntityBase implements ContentEntityInterface, Entit
         'display_label' => TRUE,
       ],
       'weight' => 20,
-    ])
-    ->setDisplayConfigurable('form', TRUE);
+    ]);
+    $fields['status']->setDisplayConfigurable('form', TRUE);
 
     return $fields;
   }

@@ -2,13 +2,13 @@
 
 namespace Drupal\toolkit\Form;
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
-use Drupal\toolkit\ContentEntityInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -21,7 +21,7 @@ class RevisionRevertForm extends ConfirmFormBase {
   /**
    * The Entity revision.
    *
-   * @var \Drupal\toolkit\ContentEntityInterface
+   * @var \Drupal\Core\Entity\EntityInterface
    */
   protected $revision;
 
@@ -197,13 +197,13 @@ class RevisionRevertForm extends ConfirmFormBase {
   /**
    * Prepares a revision to be reverted.
    *
-   * @param \Drupal\toolkit\ContentEntityInterface $revision
+   * @param \Drupal\Core\Entity\EntityInterface $revision
    *   The revision to be reverted.
    *
-   * @return \Drupal\toolkit\ContentEntityInterface
+   * @return \Drupal\Core\Entity\EntityInterface
    *   The prepared revision ready to be stored.
    */
-  protected function prepareRevertedRevision(ContentEntityInterface $revision) {
+  protected function prepareRevertedRevision(EntityInterface $revision) {
     $revision->setNewRevision();
     $revision->isDefaultRevision(TRUE);
     $revision->setRevisionCreationTime($this->time->getRequestTime());
