@@ -3,7 +3,7 @@
 namespace Drupal\toolkit;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Component\Datetime\TimeInterface;
+use Drupal\Component\Datetime\TimeInterface as CoreTimeInterface;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 
 /**
@@ -28,7 +28,7 @@ class Time implements TimeInterface {
   /**
    * Constructs a new OlyTime object.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, TimeInterface $datetime_time) {
+  public function __construct(ConfigFactoryInterface $config_factory, CoreTimeInterface $datetime_time) {
     $this->configFactory = $config_factory;
     $this->datetimeTime = $datetime_time;
   }

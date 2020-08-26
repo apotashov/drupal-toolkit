@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\oly;
+namespace Drupal\toolkit;
 
 /**
  * Defines an interface for the time service.
