@@ -92,16 +92,20 @@ class ContentEntityRevisionController extends ControllerBase implements Containe
    */
   public function setDefaultRevisionableEntityInfo() {
     // Load the current request.
-    $request = $this->requestStack->getCurrentRequest();
+    $request = $this->requestStack
+      ->getCurrentRequest();
 
     // Store the entity type id of the contextual revisionable entity.
-    $this->entityType = $request->attributes->get('entity_type_id');
+    $this->entityType = $request->attributes
+      ->get('entity_type_id');
 
     // Store the entity id of the contextual revisionable entity.
-    $this->entityId = $request->attributes->get($this->entityType);
+    $this->entityId = $request->attributes
+      ->get($this->entityType);
 
     // Store the revision id of the contextual revisionable entity.
-    $this->entityRevisionId = $request->attributes->get("{$this->entityType}_revision");
+    $this->entityRevisionId = $request->attributes
+      ->get("{$this->entityType}_revision");
   }
 
   /**
@@ -153,9 +157,13 @@ class ContentEntityRevisionController extends ControllerBase implements Containe
   public function revisionOverview() {
     // Get entity type id.
     $entity_type_id = $this->entityType;
+
     // Get storage.
-    $storage = $this->entityTypeManager()->getStorage($this->entityType);
-    // Load entity.
+    $storage = $this
+      ->entityTypeManager()
+      ->getStorage($this->entityType);
+
+    // Load the entity.
     $entity = $storage->load($this->entityId);
 
     // Get the current user.
@@ -165,11 +173,13 @@ class ContentEntityRevisionController extends ControllerBase implements Containe
     $build['#title'] = $this->t('Revisions for %title', ['%title' => $entity->label()]);
     $header = [$this->t('Revision'), $this->t('Operations')];
 
-    // Gets the entity type admin permission.
-    $admin_permission = $entity->getEntityType()->getAdminPermission();
+    // Get the entity type admin permission.
+    $admin_permission = $entity
+      ->getEntityType()
+      ->getAdminPermission();
 
-    // Check if currect user can edit entity.
-    $edit_permission = $account->hasPermission($admin_permission);
+    // Check if currect user has the admin permission.
+    $user_is_admin = $account->hasPermission($admin_permission);
 
     $rows = [];
 
@@ -177,6 +187,8 @@ class ContentEntityRevisionController extends ControllerBase implements Containe
     $vids = $storage->revisionIds($entity);
 
     $latest_revision = TRUE;
+
+    // Iterate the revisions.
     foreach (array_reverse($vids) as $vid) {
       $revision = $storage->loadRevision($vid);
       $username = [
@@ -228,7 +240,7 @@ class ContentEntityRevisionController extends ControllerBase implements Containe
       }
       else {
         $links = [];
-        if ($edit_permission) {
+        if ($user_is_admin) {
           $links['revert'] = [
             'title' => $this->t('Revert'),
             'url' => Url::fromRoute("entity.{$entity_type_id}.revision_revert", [
@@ -236,9 +248,7 @@ class ContentEntityRevisionController extends ControllerBase implements Containe
               "{$entity_type_id}_revision" => $vid,
             ]),
           ];
-        }
 
-        if ($edit_permission) {
           $links['delete'] = [
             'title' => $this->t('Delete'),
             'url' => Url::fromRoute("entity.{$entity_type_id}.revision_delete", [

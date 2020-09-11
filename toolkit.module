@@ -130,7 +130,9 @@ function toolkit_file_url_alter(&$uri) {
  */
 function toolkit_field_widget_form_alter(&$element, FormStateInterface &$form_state, $context) {
   // Get the field type.
-  $field_type = $context['items']->getFieldDefinition()->getType();
+  $field_type = $context['items']
+    ->getFieldDefinition()
+    ->getType();
 
   // Check if the field is an entity reference field.
   if ($field_type == 'entity_reference' && isset($element['target_id'])) {
@@ -190,7 +192,8 @@ function toolkit_form_system_logging_settings_submit($form, FormStateInterface $
  *   The image proxy domain, if set, otherwise NULL.
  */
 function toolkit_get_image_proxy_domain() {
-  return \Drupal::config('toolkit.settings')->get('image_proxy');
+  return \Drupal::config('toolkit.settings')
+    ->get('image_proxy');
 }
 
 /**

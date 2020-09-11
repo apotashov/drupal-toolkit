@@ -25,7 +25,7 @@ use Drupal\Core\Entity\EntityInterface;
 function hook_contextual_entity_info(EntityInterface $entity) {
   if ($entity->getEntityTypeId() == 'team') {
     return [
-      'teamId' => $entity->team_id->value,
+      'teamId' => $entity->getTeamId(),
     ];
   }
 }

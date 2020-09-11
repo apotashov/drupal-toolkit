@@ -83,13 +83,16 @@ class RevisionDeleteForm extends ConfirmFormBase {
     $request = $this->getRequest();
 
     // Store the entity type id of the contextual revisionable entity.
-    $this->entityType = $request->attributes->get('entity_type_id');
+    $this->entityType = $request->attributes
+      ->get('entity_type_id');
 
     // Store the revision id of the contextual revisionable entity.
-    $this->entityRevisionId = $request->attributes->get("{$this->entityType}_revision");
+    $this->entityRevisionId = $request->attributes
+      ->get("{$this->entityType}_revision");
 
     // Store the storage of the contextual revisionable entity.
-    $this->storage = $this->entityTypeManager->getStorage($this->entityType);
+    $this->storage = $this->entityTypeManager
+      ->getStorage($this->entityType);
   }
 
   /**
